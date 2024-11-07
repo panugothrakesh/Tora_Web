@@ -1,8 +1,7 @@
-import React from 'react'
-
-function Page() {
+async function Page({searchParams}: {searchParams: {query: string}}) {
+  const { query } = await searchParams;
   return (
-    <div>Loading soon...</div>
+    <div>Results for {query}</div>
   )
 }
 

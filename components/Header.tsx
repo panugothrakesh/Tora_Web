@@ -12,7 +12,7 @@ function Header() {
         <header className='flex text-primaryText flex-wrap justify-between items-center p-4 py-2'>
             {/* Top Row */}
             <div className='flex w-full flex-wrap justify-between items-center'>
-                <Link href="/" className='flex items-center gap-2 text-xl font-serif font-semibold hover:opacity-50 cursor-pointer mx-auto sm:mx-0'>
+                <Link href="/" className='flex items-center gap-2 text-xl font-serif font-semibold hover:opacity-80 transition-all duration-300 ease-out cursor-pointer mx-auto sm:mx-0'>
                     <Image className='w-8 h-8' src={'./assets/TORAIcon.svg'} alt='TORA Icon' width={100} height={100} />
                     TORA
                 </Link>
@@ -22,7 +22,7 @@ function Header() {
                 </Form>
 
                 <div className='flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none'>
-                    <Link href="/cart" className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-primaryText bg-opacity-90 hover:bg-opacity-100 transition-all duration-300 ease-in-out text-white px-4 py-2 rounded-md font-semibold'>
+                    <Link href="/cart" className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 border border-primaryText hover:bg-primaryText transition-all duration-300 ease-in-out hover:text-white text-primaryText px-4 py-2 rounded-md font-semibold'>
                         <ShoppingCartIcon className='w-5 h-5' />
                         {/* Cart Count */}
                         <span className='text-sm'>My Cart</span>
@@ -32,7 +32,7 @@ function Header() {
                     <div className='flex items-center gap-2'>
                         <ClerkLoaded>
                             <SignedIn>
-                                <Link href="/orders" className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-primaryText bg-opacity-90 hover:bg-opacity-100 transition-all duration-300 ease-in-out text-white px-4 py-2 rounded-md font-semibold'>
+                                <Link href="/orders" className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 border border-primaryText hover:bg-primaryText transition-all duration-300 ease-in-out hover:text-white text-primaryText px-4 py-2 rounded-md font-semibold'>
                                     <PackageCheckIcon className='w-5 h-5' />
                                     <span className='text-sm'>My Orders</span>
                                 </Link>
@@ -47,7 +47,7 @@ function Header() {
                                 </div>
                             ) : (
                                 <SignInButton mode='modal'>
-                                    <button className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 border border-primaryText hover:bg-primaryText transition-all duration-300 ease-in-out hover:text-white text-primaryText px-4 py-2 rounded-md font-semibold'>
+                                    <button className='flex-1 relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-primaryText bg-opacity-90 hover:bg-opacity-100 transition-all duration-300 ease-in-out text-white px-4 py-2 rounded-md font-semibold'>
                                         <span className='text-sm'>Sign In</span>
                                     </button>
                                 </SignInButton>
