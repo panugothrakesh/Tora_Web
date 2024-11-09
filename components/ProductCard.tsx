@@ -10,7 +10,7 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
     const isOutOfStock = product.stock !== undefined && product.stock !== null && product.stock <= 0;
   return (
-    <Link href={`/products/${product.slug?.current}`} className={`group flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden ${isOutOfStock ? 'opacity-50 pointer-events-none' : ''}`}>
+    <Link href={`/product/${product.slug?.current}`} className={`group flex flex-col w-full bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden ${isOutOfStock ? 'opacity-50 pointer-events-none' : ''}`}>
 
         <div className="relative aspect-square w-full h-full overflow-hidden">
             {product.images && (
@@ -19,7 +19,6 @@ function ProductCard({ product }: ProductCardProps) {
                     src={imageUrl(product.images[0]).url()}
                     alt={product.name || 'Product Image'}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
             )}
             {isOutOfStock && (

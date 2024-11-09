@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
-import { SanityLive } from "@/sanity/lib/live";
+import { SanityLive } from "@/sanity/lib/client-live";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
