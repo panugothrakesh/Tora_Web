@@ -4,6 +4,8 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { Product } from "@/sanity.types";
 import { useState } from 'react';
+import { Button } from "./ui/button";
+import AddToBasketButton from "./AddToBasketButton";
 
 interface ProductDisplayProps {
     product: Product;
@@ -15,13 +17,13 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
     
     const handlePrevImage = () => {
         setCurrentImageIndex((prev) => 
-            prev === 0 ? product.images.length - 1 : prev - 1
+            prev === 0 ? (product.images?.length ?? 0) - 1 : prev - 1
         );
     };
 
     const handleNextImage = () => {
         setCurrentImageIndex((prev) => 
-            prev === product.images.length - 1 ? 0 : prev + 1
+            prev === (product.images?.length ?? 0) - 1 ? 0 : prev + 1
         );
     };
 
@@ -74,6 +76,9 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
                                 <PortableText value={product.description} />
                             )}
                         </div>
+                    </div>
+                    <div className="mt-6">
+                        <AddToBasketButton product={product} disabled={isOutOfStock}/>
                     </div>
                 </div>
             </div>
