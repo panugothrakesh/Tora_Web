@@ -4,7 +4,6 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { Product } from "@/sanity.types";
 import { useState } from 'react';
-import { Button } from "./ui/button";
 import AddToBasketButton from "./AddToBasketButton";
 
 interface ProductDisplayProps {

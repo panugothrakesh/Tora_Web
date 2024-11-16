@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 interface AddToBasketButtonProps {
     product: Product
-    disabled: boolean
+    disabled?: boolean
 }
 
 function AddToBasketButton({ product, disabled }: AddToBasketButtonProps) {

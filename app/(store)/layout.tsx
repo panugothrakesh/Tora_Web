@@ -4,6 +4,7 @@ import "../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/Header";
 import { SanityLive } from "@/sanity/lib/client-live";
+import Script from "next/dist/client/script";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -29,12 +30,18 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
     <html lang="en">
+      <head>
+        <Script
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="lazyOnload"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <main>
           <Header />
-        {children}
+          {children}
         </main>
         <SanityLive />
       </body>
