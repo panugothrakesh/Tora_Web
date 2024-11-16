@@ -93,7 +93,7 @@ function CartPage() {
                     // Handle successful payment
                     console.log("Payment successful:", response);
                     // You can redirect to a success page or show a success message
-                    window.location.href = `/order/success?order_id=${order.orderNumber}`;
+                    window.location.href = `/success?session_id=${response.razorpay_payment_id}&orderNumber=${order.orderNumber}`;
                 },
                 modal: {
                     ondismiss: function() {
