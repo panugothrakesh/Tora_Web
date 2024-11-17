@@ -90,9 +90,6 @@ function CartPage() {
                     email: order.customerEmail,
                 },
                 handler: function(response: RazorpayResponse) {
-                    // Handle successful payment
-                    console.log("Payment successful:", response);
-                    // You can redirect to a success page or show a success message
                     window.location.href = `/success?session_id=${response.razorpay_payment_id}&orderNumber=${order.orderNumber}`;
                 },
                 modal: {

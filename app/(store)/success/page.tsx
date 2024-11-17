@@ -36,18 +36,18 @@ function SuccessPage() {
                         {orderNumber && (
                             <p className="text-gray-600 flex items-center space-x-5">
                                 <span>Order Number:</span>
-                            <span className=" font-mono text-sm text-green=600">
-                                {orderNumber}
-                            </span>
-                        </p>
-                    )}
-                    </div>
-                    {/* {sessionId && (
+                                <span className=" font-mono text-sm text-green=600">
+                                    {orderNumber}
+                                </span>
+                            </p>
+                        )}
+                        {/* {sessionId && (
                         <p className="text-gray-600 flex justify-between">
                             <span>Transaction ID:</span>
                             <span className="font-mono text-sm">{sessionId}</span>
                         </p>
                     )} */}
+                    </div>
                 </div>
                 <div className="space-y-4">
                     <p className=" text-gray-600">
@@ -56,9 +56,9 @@ function SuccessPage() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Button asChild className=" bg-green-600">
                             <Link href="/orders">View Order Details</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                        <Link href="/">Continue Shoppings</Link>
+                        </Button>
+                        <Button asChild variant="outline">
+                            <Link href="/">Continue Shoppings</Link>
                         </Button>
                     </div>
                 </div>
