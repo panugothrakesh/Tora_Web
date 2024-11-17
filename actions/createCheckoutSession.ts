@@ -9,6 +9,7 @@ export type Metadata = {
     customerEmail: string;
     clerkUserId: string;
     customerPhone?: string;
+    discountAmount?: number;
 }
 
 export type GroupedBasketItems = {
@@ -70,8 +71,13 @@ export async function createCheckoutSession(
         const totalAmount = items.reduce((total, item) => 
             total + (item.product.price || 0) * item.quantity, 0);
 
+        // Apply discount if exists
+        const discountedAmount = metadata.discountAmount 
+            ? totalAmount * (1 - metadata.discountAmount / 100)
+            : totalAmount;
+
         const session = await razorpay.orders.create({
-            amount: Math.round(totalAmount * 100),
+            amount: Math.round(discountedAmount * 100),
             currency: "INR",
             receipt: metadata.orderNumber,
             notes: {
@@ -84,7 +90,7 @@ export async function createCheckoutSession(
                     name: item.product.name,
                     quantity: item.quantity,
                     price: item.product.price
-                })))
+                }))),
             },
             payment_capture: true
         });

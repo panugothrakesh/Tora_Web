@@ -62,6 +62,17 @@ export async function POST(request: NextRequest) {
                 const orderItems = JSON.parse(order.notes.orderItems);
                 console.log("Parsed order items:", orderItems);
 
+                // Calculate original total price
+                const originalPrice = orderItems.reduce((total: number, item: { price: number; quantity: number }) => 
+                    total + (item.price * item.quantity), 0);
+
+                // Calculate actual amount paid (converting from smallest currency unit)
+                const amountPaid = order.amount / 100;
+
+                // Calculate discount amount
+                const discountAmount = originalPrice - amountPaid;
+                console.log("Price calculation:", { originalPrice, amountPaid, discountAmount });
+
                 const sanityOrder = await createOrderInSanity({
                     orderNumber: order.receipt,
                     RazorpayCheckoutId: order.id,
@@ -71,10 +82,11 @@ export async function POST(request: NextRequest) {
                     name: order.notes.customerName,
                     email: order.notes.customerEmail,
                     products: orderItems,
-                    totalAmount: order.amount / 100,
+                    totalAmount: amountPaid,
                     currency: order.currency,
                     status: 'paid',
-                    orderDate: new Date().toISOString()
+                    orderDate: new Date().toISOString(),
+                    discountAmount: discountAmount
                 });
 
                 console.log("Order created in Sanity:", sanityOrder);
@@ -116,6 +128,7 @@ async function createOrderInSanity(orderData: {
     currency: string;
     status: 'paid';
     orderDate: string;
+    discountAmount: number;
 }) {
     if (!orderData.orderNumber || !orderData.RazorpayCustomerId || !orderData.products.length) {
         throw new Error('Missing required order data');
@@ -133,7 +146,8 @@ async function createOrderInSanity(orderData: {
         totalAmount,
         currency,
         status,
-        orderDate
+        orderDate,
+        discountAmount
     } = orderData;
 
     const sanityProducts = products.map((item) => ({
@@ -159,7 +173,7 @@ async function createOrderInSanity(orderData: {
         products: sanityProducts,
         totalAmount,
         currency,
-        amountDiscount: 0,
+        amountDiscount: discountAmount,
         status,
         orderDate,
     });

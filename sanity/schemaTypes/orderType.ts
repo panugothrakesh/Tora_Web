@@ -74,15 +74,15 @@ export const orderType = defineType({
                         select: {
                             product: 'product.name',
                             quantity: 'quantity',
-                            image: 'product.image',
+                            images: 'product.images',
                             price: 'product.price',
                             currency: 'product.currency',
                         },
                         prepare(select) {
                             return {
                                 title: `${select.product} x ${select.quantity}`,
-                                subtitle: `${select.price *  select.quantity}`,
-                                media: select.image,
+                                subtitle: `₹${select.price *  select.quantity}`,
+                                media: select.images[0],
                             }
                         },
                     },
@@ -139,12 +139,12 @@ export const orderType = defineType({
             email: 'email',
         },
         prepare(select) {
-            const orderIdSnippet = `${select.orderId.slice(0, 6)}...${select.orderId.slice(-5)}`
+            const orderIdSnippet = `${select.orderId.slice(0, 6)}...${select.orderId.slice(-5)}`;
             return {
                 title: `${select.name} (${orderIdSnippet})`,
-                subtitle: `${select.amount} ${select.currency}, ${select.email}`,
+                subtitle: `₹${select.amount}, ${select.email}`,
                 media: BasketIcon,
-            }
+            };
         },
     },
 })
