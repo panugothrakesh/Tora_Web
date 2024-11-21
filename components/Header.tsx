@@ -1,5 +1,5 @@
 "use client";
-import { ClerkLoaded, SignedIn, SignIn, SignInButton, UserButton, useUser } from '@clerk/nextjs';
+import { ClerkLoaded, SignedIn, SignInButton, UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import Form from 'next/form';
