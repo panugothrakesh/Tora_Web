@@ -11,7 +11,6 @@ function ProductCard({ product }: ProductCardProps) {
     const isOutOfStock = product.stock !== undefined && product.stock !== null && product.stock <= 0;
   return (
     <Link href={`/product/${product.slug?.current}`} className={`group flex flex-col w-full bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden ${isOutOfStock ? 'opacity-50 pointer-events-none' : ''}`}>
-
         <div className="relative aspect-square w-full h-full overflow-hidden">
             {product.images && (
                 <Image

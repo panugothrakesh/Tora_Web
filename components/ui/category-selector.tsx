@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import {
     Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandInput,
 } from "./command";
-import { Check, ChevronDownIcon } from "lucide-react";
+import { Check, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
 export function CategorySelectorComponent({ categories }: CategorySelectorProps) {
     const [open, setOpen] = useState(false);
@@ -25,11 +25,15 @@ export function CategorySelectorComponent({ categories }: CategorySelectorProps)
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full max-w-full relative flex justify-center sm:justify-start sm: flex-none items-center space-x-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="w-full max-w-full relative flex justify-center sm:justify-start sm:flex-none items-center space-x-2 bg-primaryText hover:bg-black text-white font-bold py-2 px-4 rounded-md"
                 >
                     {value ?
                         categories.find((category) => category._id === value)?.title : "Filtered by Category"}
+                    {open ? 
+                    <ChevronUpIcon className="ml-2 h-4 w-4 shrink-0" />
+                    : 
                     <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0" />
+                    }
                 </Button>
             </PopoverTrigger>
 
