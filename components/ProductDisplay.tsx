@@ -4,7 +4,7 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { Product } from "@/sanity.types";
 import { useState } from 'react';
-import AddToBasketButton from "./AddToBasketButton";
+import {AddToCart} from "./AddToBasketButton";
 
 interface ProductDisplayProps {
     product: Product;
@@ -77,7 +77,7 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
                         </div>
                     </div>
                     <div className="mt-6">
-                        <AddToBasketButton product={product} disabled={isOutOfStock}/>
+                        <AddToCart product={product} disabled={isOutOfStock}/>
                     </div>
                 </div>
             </div>
