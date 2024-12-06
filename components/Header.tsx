@@ -1,6 +1,5 @@
 "use client";
 import { ClerkLoaded, SignedIn, SignInButton, UserButton, useUser } from '@clerk/nextjs';
-import Image from 'next/image';
 import Link from 'next/link';
 import Form from 'next/form';
 import React from 'react'
@@ -17,7 +16,6 @@ function Header() {
             {/* Top Row */}
             <div className='flex w-full flex-wrap justify-between items-center'>
                 <Link href="/" className='flex items-center gap-2 text-xl font-serif font-semibold hover:opacity-80 transition-all duration-300 ease-out cursor-pointer mx-auto sm:mx-0'>
-                    <Image className='w-8 h-8' src={'/assets/TORAIcon.svg'} alt='TORA Icon' width={100} height={100} />
                     TORA
                 </Link>
 
