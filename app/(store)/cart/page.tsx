@@ -55,7 +55,7 @@ function CartPage() {
     useEffect(() => {
         setIsClient(true);
     }, []);
-    if(!isClient) return <Loader />
+    if (!isClient) return <Loader />
 
     if (groupedItems.length == 0) {
         return (
@@ -89,14 +89,14 @@ function CartPage() {
                     name: order.customerName,
                     email: order.customerEmail,
                 },
-                handler: function(response: RazorpayResponse) {
+                handler: function (response: RazorpayResponse) {
                     // Handle successful payment
                     console.log("Payment successful:", response);
                     // You can redirect to a success page or show a success message
                     window.location.href = `/success?session_id=${response.razorpay_payment_id}&orderNumber=${order.orderNumber}`;
                 },
                 modal: {
-                    ondismiss: function() {
+                    ondismiss: function () {
                         setIsLoading(false);
                     }
                 },
@@ -107,7 +107,7 @@ function CartPage() {
 
             const razorpay = new ((window as unknown as RazorpayWindow).Razorpay)(options);
             razorpay.open();
-            
+
         } catch (error) {
             console.error("Error during checkout:", error);
             alert("Failed to initiate checkout. Please try again.");
@@ -147,39 +147,44 @@ function CartPage() {
                             </div>
                             <div className="flex items-center ml-4 flex-shrink-0">
                                 <AddToBasketButton product={item.product} />
-                                </div>
                             </div>
-                ))}
+                        </div>
+                    ))}
                 </div>
 
-                <div className="w-full lg:w-80 lg:sticky lg:top-4 h-fit bg-white p-6 border rounded order-first lg:order-last fixed bottom-0 left-0 lg:left-auto">
+                <div className="h-64 lg:h-8">
+                    {/* Spacer for fixed checkout on mobile */}
+                </div>
+            </div>
+            <div className='w-full max-w-6xl mx-auto fixed bottom-0 lg:pr-10 pr-8'>
+                <div className="w-full h-fit bg-white p-6 border rounded mr-12">
                     <h2 className="text-xl font-semibold">Order Summary</h2>
                     <div className="mt-4 space-y-2">
                         <p className="flex justify-between">
                             <span>Items:</span>
                             <span>
-                            {groupedItems.reduce((total, item) => total + item.quantity, 0)}
-                        </span>
-                    </p>
-                    <p className="flex justify-between text-2xl font-bold border-t pt-2">
-                        <span>Total:</span>
-                        <span>
-                            ₹{useBasketStore.getState().getTotalPrice().toFixed(2)}
-                        </span>
-                    </p>
+                                {groupedItems.reduce((total, item) => total + item.quantity, 0)}
+                            </span>
+                        </p>
+                        <p className="flex justify-between text-2xl font-bold border-t pt-2">
+                            <span>Total:</span>
+                            <span>
+                                ₹{useBasketStore.getState().getTotalPrice().toFixed(2)}
+                            </span>
+                        </p>
                     </div>
 
                     {isSignedIn ? (
-                        <button 
-                            onClick={handleCheckout} 
-                            disabled={isLoading} 
+                        <button
+                            onClick={handleCheckout}
+                            disabled={isLoading}
                             className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
                         >
                             {isLoading ? "Processing..." : "Checkout"}
                         </button>
                     ) : (
                         <SignInButton mode="modal">
-                            <button 
+                            <button
                                 className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                             >
                                 Sign in to Checkout
@@ -187,12 +192,9 @@ function CartPage() {
                         </SignInButton>
                     )}
                 </div>
-                <div className="h-64 lg:h-8">
-                    {/* Spacer for fixed checkout on mobile */}
-                </div>
             </div>
         </div>
     )
 }
 
-            export default CartPage
+export default CartPage
