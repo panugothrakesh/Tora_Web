@@ -10,6 +10,16 @@ export type Metadata = {
     clerkUserId: string;
     customerPhone?: string;
     discountAmount?: number;
+    shippingAddress: {
+        firstName: string;
+        lastName: string;
+        mobile: string;
+        address1: string;
+        address2?: string;
+        landmark?: string;
+        pincode: string;
+    };
+    paymentMethod: 'cod' | 'online';
 }
 
 export type GroupedBasketItems = {
@@ -91,6 +101,8 @@ export async function createCheckoutSession(
                     quantity: item.quantity,
                     price: item.product.price
                 }))),
+                shippingAddress: JSON.stringify(metadata.shippingAddress),
+                paymentMethod: metadata.paymentMethod || 'online'
             },
             payment_capture: true
         });

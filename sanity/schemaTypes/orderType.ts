@@ -19,12 +19,32 @@ export const orderType = defineType({
             name: 'RazorpayCheckoutId',
             title: 'Razorpay Checkout ID',
             type: 'string',
+            initialValue: '',
         }),
         defineField({
             name: 'RazorpayCustomerId',
             title: 'Razorpay Customer ID',
             type: 'string',
-            validation: (Rule) => Rule.required().error('Razorpay Customer ID is required'),
+            initialValue: '',
+        }),
+        defineField({
+            name: 'RazorpayPaymentIntentId',
+            title: 'Razorpay Payment Intent ID',
+            type: 'string',
+            initialValue: '',
+        }),
+        defineField({
+            name: 'paymentMethod',
+            title: 'Payment Method',
+            type: 'string',
+            options: {
+                list: [
+                    { title: 'Cash on Delivery', value: 'cod' },
+                    { title: 'Online Payment', value: 'online' },
+                ],
+            },
+            validation: (Rule) => Rule.required(),
+            initialValue: 'online'
         }),
         defineField({
             name: 'clerkUserId',
@@ -43,12 +63,6 @@ export const orderType = defineType({
             title: 'Customer Email',
             type: 'string',
             validation: (Rule) => Rule.required().error('Customer Email is required'),
-        }),
-        defineField({
-            name: 'RazorpayPaymentIntentId',
-            title: 'Razorpay Payment Intent ID',
-            type: 'string',
-            validation: (Rule) => Rule.required().error('Razorpay Payment Intent ID is required'),
         }),
         defineField({
             name: 'products',
@@ -129,6 +143,54 @@ export const orderType = defineType({
             type: 'datetime',
             validation: (Rule) => Rule.required().error('Order Date is required'),
         }),
+        defineField({
+            name: 'shippingAddress',
+            title: 'Shipping Address',
+            type: 'object',
+            validation: (Rule) => Rule.required(),
+            fields: [
+                {
+                    name: 'firstName',
+                    type: 'string',
+                    title: 'First Name',
+                    validation: (Rule) => Rule.required()
+                },
+                {
+                    name: 'lastName',
+                    type: 'string',
+                    title: 'Last Name',
+                    validation: (Rule) => Rule.required()
+                },
+                {
+                    name: 'mobile',
+                    type: 'string',
+                    title: 'Mobile',
+                    validation: (Rule) => Rule.required()
+                },
+                {
+                    name: 'address1',
+                    type: 'string',
+                    title: 'Address Line 1',
+                    validation: (Rule) => Rule.required()
+                },
+                {
+                    name: 'address2',
+                    type: 'string',
+                    title: 'Address Line 2'
+                },
+                {
+                    name: 'landmark',
+                    type: 'string',
+                    title: 'Landmark'
+                },
+                {
+                    name: 'pincode',
+                    type: 'string',
+                    title: 'Pincode',
+                    validation: (Rule) => Rule.required()
+                }
+            ]
+        })
     ],
     preview: {
         select: {

@@ -92,10 +92,11 @@ export type Order = {
   orderNumber?: string;
   RazorpayCheckoutId?: string;
   RazorpayCustomerId?: string;
+  RazorpayPaymentIntentId?: string;
+  paymentMethod?: "cod" | "online";
   clerkUserId?: string;
   name?: string;
   email?: string;
-  RazorpayPaymentIntentId?: string;
   products?: Array<{
     product?: {
       _ref: string;
@@ -111,6 +112,15 @@ export type Order = {
   amountDiscount?: number;
   status?: "pending" | "paid" | "shipped" | "delivered" | "cancelled" | "returned" | "refunded";
   orderDate?: string;
+  shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    mobile?: string;
+    address1?: string;
+    address2?: string;
+    landmark?: string;
+    pincode?: string;
+  };
 };
 
 export type Product = {
@@ -293,10 +303,11 @@ export type MY_ORDER_QUERYResult = Array<{
   orderNumber?: string;
   RazorpayCheckoutId?: string;
   RazorpayCustomerId?: string;
+  RazorpayPaymentIntentId?: string;
+  paymentMethod?: "cod" | "online";
   clerkUserId?: string;
   name?: string;
   email?: string;
-  RazorpayPaymentIntentId?: string;
   products: Array<{
     product: {
       _id: string;
@@ -366,6 +377,15 @@ export type MY_ORDER_QUERYResult = Array<{
   amountDiscount?: number;
   status?: "cancelled" | "delivered" | "paid" | "pending" | "refunded" | "returned" | "shipped";
   orderDate?: string;
+  shippingAddress?: {
+    firstName?: string;
+    lastName?: string;
+    mobile?: string;
+    address1?: string;
+    address2?: string;
+    landmark?: string;
+    pincode?: string;
+  };
 }>;
 
 // Source: ./sanity/lib/products/getAllCategories.ts

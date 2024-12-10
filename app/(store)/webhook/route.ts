@@ -43,11 +43,16 @@ export async function POST(request: NextRequest) {
             // Extract order information from the payment entity
             const order = {
                 id: payment.order_id,
-                receipt: payment.description.split('Order #')[1], // Assuming the description contains the order number
+                receipt: payment.description.split('Order #')[1],
                 notes: payment.notes,
                 amount: payment.amount,
                 currency: payment.currency
             };
+
+            // Add debug logging
+            console.log("Payment notes:", payment.notes);
+            console.log("Shipping address from notes:", payment.notes.shippingAddress);
+            console.log("Payment method from notes:", payment.notes.paymentMethod);
 
             if (!order) {
                 console.error("Order data is missing in the webhook payload. Full payload:", event.payload);
@@ -56,6 +61,7 @@ export async function POST(request: NextRequest) {
 
             console.log("Payment details:", payment);
             console.log("Order details:", order);
+            console.log("Shipping Address:", order.notes.shippingAddress);
             
             try {
                 // Parse the order items from notes
@@ -86,7 +92,9 @@ export async function POST(request: NextRequest) {
                     currency: order.currency,
                     status: 'paid',
                     orderDate: new Date().toISOString(),
-                    discountAmount: discountAmount
+                    discountAmount: discountAmount,
+                    paymentMethod: 'online',
+                    shippingAddress: JSON.parse(order.notes.shippingAddress)
                 });
 
                 console.log("Order created in Sanity:", sanityOrder);
@@ -129,6 +137,16 @@ async function createOrderInSanity(orderData: {
     status: 'paid';
     orderDate: string;
     discountAmount: number;
+    paymentMethod: string;
+    shippingAddress: {
+        firstName: string;
+        lastName: string;
+        mobile: string;
+        address1: string;
+        address2?: string;
+        landmark?: string;
+        pincode: string;
+    };
 }) {
     if (!orderData.orderNumber || !orderData.RazorpayCustomerId || !orderData.products.length) {
         throw new Error('Missing required order data');
@@ -147,7 +165,8 @@ async function createOrderInSanity(orderData: {
         currency,
         status,
         orderDate,
-        discountAmount
+        paymentMethod,
+        shippingAddress
     } = orderData;
 
     const sanityProducts = products.map((item) => ({
@@ -160,24 +179,27 @@ async function createOrderInSanity(orderData: {
     }));
     console.log("Sanity products:", sanityProducts);
 
+    console.log("orderData:", orderData);
 
     const order = await backendClient.create({
         _type: "order",
         orderNumber,
-        RazorpayCheckoutId,
-        RazorpayPaymentIntentId,
-        RazorpayCustomerId,
         clerkUserId,
         name,
         email,
         products: sanityProducts,
         totalAmount,
-        currency,
-        amountDiscount: discountAmount,
-        status,
-        orderDate,
+        currency: currency,
+        status: status,
+        orderDate: orderDate,
+        paymentMethod: paymentMethod,
+        RazorpayCheckoutId,
+        RazorpayCustomerId,
+        RazorpayPaymentIntentId,
+        shippingAddress: shippingAddress
     });
     console.log("Order created in Sanity:", order);
 
     return order;
 }
+
