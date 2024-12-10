@@ -6,9 +6,10 @@ interface ModalProps {
     onClose: () => void;
     title: string;
     message: string;
+    children?: React.ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, message }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, message, children }) => {
     if (!isOpen) return null;
 
     return (
@@ -19,6 +20,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, message }) => {
                     <XIcon className='w-6 h-6 cursor-pointer' onClick={onClose}/>
                 </div>
                 <p className="mb-4">{message}</p>
+                {children}
             </div>
         </div>
     );

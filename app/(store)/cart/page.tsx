@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import Modal from '@/components/Modal';
+import { Button } from '@/components/ui/button';
 
 interface RazorpayWindow extends Window {
     Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
@@ -57,6 +58,8 @@ const CartPage: React.FC = () => {
     const [selectedPaymentMode, setSelectedPaymentMode] = useState<'online' | 'cod'>('cod');
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [addressToRemove, setAddressToRemove] = useState<number | null>(null);
 
     useEffect(() => {
         setIsClient(true);
@@ -213,6 +216,22 @@ const CartPage: React.FC = () => {
         }
     };
 
+    const handleRemoveClick = (index: number) => {
+        setAddressToRemove(index);
+        setShowConfirmModal(true);
+    };
+
+    const confirmRemoveAddress = () => {
+        if (addressToRemove !== null) {
+            removeAddress(addressToRemove);
+            if (selectedAddressIndex === addressToRemove) {
+                setSelectedAddressIndex(0);
+            }
+            setAddressToRemove(null);
+        }
+        setShowConfirmModal(false);
+    };
+
     return (
         <div className="container mx-auto p-4 max-w-6xl">
             <Modal
@@ -221,6 +240,21 @@ const CartPage: React.FC = () => {
                 title="Checkout Error"
                 message={modalMessage}
             />
+            <Modal
+                isOpen={showConfirmModal}
+                onClose={() => setShowConfirmModal(false)}
+                title="Confirm Removal"
+                message="Are you sure you want to remove this address?"
+            >
+                <div className="flex justify-end space-x-2">
+                    <Button variant="outline" onClick={() => setShowConfirmModal(false)}>
+                        Cancel
+                    </Button>
+                    <Button variant="destructive" className='bg-red-500 hover:bg-red-600 text-white' onClick={confirmRemoveAddress}>
+                        Confirm
+                    </Button>
+                </div>
+            </Modal>
             <h1 className="text-2xl font-bold mb-4">Your Basket</h1>
             <div className="flex flex-col lg:flex-row gap-2 lg:gap-0">
                 <div className="flex-grow">
@@ -264,12 +298,12 @@ const CartPage: React.FC = () => {
                 <div className='w-full grid grid-cols-2 max-w-6xl border mx-auto bottom-0'>
                     <div className="w-full h-fit bg-white p-4 pr-2 rounded">
                         <h2 className="text-xl font-semibold">Select Address to Deliver</h2>
-                        <div className="mt-4 space-y-2">
+                        <div className="mt-4">
                             {addresses.length > 0 ? (
                                 addresses.map((address, index) => (
                                     <label 
                                         key={index} 
-                                        className={`flex items-center justify-between p-4 border rounded cursor-pointer ${
+                                        className={`flex mb-2 items-center justify-between p-4 border rounded cursor-pointer ${
                                             selectedAddressIndex === index ? 'border-blue-500 bg-blue-50' : ''
                                         }`}
                                     >
@@ -281,30 +315,24 @@ const CartPage: React.FC = () => {
                                                 onChange={() => setSelectedAddressIndex(index)}
                                                 className="mr-3 h-4 w-4 text-blue-500"
                                             />
-                                            <div className="flex-1">
-                                                <p className="font-medium">{`${address.firstName} ${address.lastName}`}</p>
-                                                <p className="text-sm text-gray-600">{address.address1}</p>
-                                                {address.address2 && (
-                                                    <p className="text-sm text-gray-600">{address.address2}</p>
-                                                )}
-                                                <p className="text-sm text-gray-600">
-                                                    {`${address.landmark ? address.landmark + ', ' : ''}${address.pincode}`}
+                                            <div className="flex-1 flex flex-col gap-1">
+                                                <p className="font-semibold">{`${address.firstName} ${address.lastName}`}</p>
+                                                <p className="text-sm text-gray-600 w-[90%]"><span className="font-medium">Address:</span> {address.address1}, {address.address2 && address.address2}.
                                                 </p>
-                                                <p className="text-sm text-gray-600">{address.mobile}</p>
+                                                <p className="text-sm text-gray-600 w-[90%]"><span className="font-medium">Landmark:</span> {`${address.landmark ? address.landmark + ', ' : ''}${address.pincode}`}</p>
+                                                <p className="text-sm text-gray-600 w-[90%]"><span className="font-medium">Mobile:</span> +91 {(address.mobile).split('').slice(0, 5).join('')} {(address.mobile).split('').slice(5, 10).join('')}</p>
                                             </div>
                                         </div>
-                                        <button 
-                                            className="text-red-500 ml-4 hover:text-red-700"
+                                        <Button
+                                            variant="destructive"
+                                            className='bg-red-500 hover:bg-red-600 text-white'
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                removeAddress(index);
-                                                if (selectedAddressIndex === index) {
-                                                    setSelectedAddressIndex(0);
-                                                }
+                                                handleRemoveClick(index);
                                             }}
                                         >
                                             Remove
-                                        </button>
+                                        </Button>
                                     </label>
                                 ))
                             ) : (
