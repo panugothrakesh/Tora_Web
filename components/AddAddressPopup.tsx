@@ -142,7 +142,7 @@ const AddAddressPopup: React.FC<AddAddressPopupProps> = ({ onClose }) => {
                 </div>
                 <div className="flex justify-between mt-4">
                     <Button onClick={onClose} className="bg-gray-300">Cancel</Button>
-                    <Button onClick={handleSubmit} className="bg-blue-500 text-white">Add Address</Button>
+                    <Button onClick={handleSubmit} className="bg-black text-white">Add Address</Button>
                 </div>
             </div>
         </div>

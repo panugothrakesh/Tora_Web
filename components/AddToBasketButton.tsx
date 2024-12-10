@@ -92,12 +92,12 @@ export const AddToCart = ({ product, disabled }: AddToBasketButtonProps) => {
         <div className="flex items-center justify-center space-x-2">
             {itemCount === 0 ?
                 <>
-                    <Button onClick={() => addItem(product)} disabled={disabled} className={` w-full rounded-md flex items-center justify-center transition-colors duration-200 ${itemCount === 0 ? " bg-gray-100" : "bg-gray-200 hover:bg-gray-300"}`}>
+                    <Button onClick={() => addItem(product)} disabled={disabled} className={` w-full py-5 rounded-md flex items-center justify-center transition-colors duration-200 ${itemCount === 0 ? " bg-gray-100" : "bg-gray-200 hover:bg-gray-300"}`}>
                         <span className={`text-lg font-semibold`}>
-                            Add to Card
+                            Add to Cart
                         </span>
                     </Button>
-                    <Button onClick={() => buyNow()} disabled={disabled} className={` w-full rounded-md flex items-center justify-center transition-colors duration-200 ${itemCount === 0 ? " bg-gray-100" : "bg-gray-200 hover:bg-gray-300"}`}>
+                    <Button onClick={() => buyNow()} className={` w-full py-5 rounded-md bg-black/90 hover:bg-black text-white flex items-center justify-center transition-colors duration-200`}>
                         <span className={`text-lg font-semibold`}>
                             Buy Now
                         </span>
