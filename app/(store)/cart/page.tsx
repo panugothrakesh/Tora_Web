@@ -9,6 +9,7 @@ import { useUser, SignInButton, useAuth } from '@clerk/nextjs';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import Modal from '@/components/Modal';
 
 interface RazorpayWindow extends Window {
     Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
@@ -54,6 +55,8 @@ const CartPage: React.FC = () => {
     const removeAddress = useBasketStore((state) => state.removeAddress);
     const [selectedAddressIndex, setSelectedAddressIndex] = useState<number>(0);
     const [selectedPaymentMode, setSelectedPaymentMode] = useState<'online' | 'cod'>('cod');
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
 
     useEffect(() => {
         setIsClient(true);
@@ -75,10 +78,22 @@ const CartPage: React.FC = () => {
 
     const handleCheckout = async () => {
         if (!user) return;
-        
+
+        if (addresses.length === 0) {
+            setModalMessage("Please add an address before proceeding to checkout.");
+            setModalOpen(true);
+            return;
+        }
+
+        if (!selectedPaymentMode) {
+            setModalMessage("Please select a payment mode before proceeding to checkout.");
+            setModalOpen(true);
+            return;
+        }
+
         setIsLoading(true);
         const orderNumber = crypto.randomUUID();
-        
+
         try {
             if (selectedPaymentMode === 'cod') {
                 const response = await fetch('/api/create-cod-order', {
@@ -200,6 +215,12 @@ const CartPage: React.FC = () => {
 
     return (
         <div className="container mx-auto p-4 max-w-6xl">
+            <Modal
+                isOpen={modalOpen}
+                onClose={() => setModalOpen(false)}
+                title="Checkout Error"
+                message={modalMessage}
+            />
             <h1 className="text-2xl font-bold mb-4">Your Basket</h1>
             <div className="flex flex-col lg:flex-row gap-2 lg:gap-0">
                 <div className="flex-grow">
