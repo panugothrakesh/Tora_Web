@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useBasketStore } from "@/store/store";
+import Loader from "@/components/ui/Loader";
 
 function SuccessPage() {
     const searchParams = useSearchParams();
@@ -15,6 +16,10 @@ function SuccessPage() {
             clearBasket();
         }
     }, [orderNumber, clearBasket]);
+
+    if(!searchParams){
+        return <Loader/>
+    }
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
             <div className=" bg-white p-12 rounded-xl shadow-lg max-w-2xl w-full mx-4">

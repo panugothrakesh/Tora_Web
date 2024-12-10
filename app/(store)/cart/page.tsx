@@ -1,5 +1,6 @@
 'use client'
 import { createCheckoutSession, Metadata } from '@/actions/createCheckoutSession';
+import AddAddressPopup from '@/components/AddAddressPopup';
 import AddToBasketButton from '@/components/AddToBasketButton';
 import Loader from '@/components/ui/Loader';
 import { imageUrl } from '@/lib/imageUrl';
@@ -7,7 +8,7 @@ import { useBasketStore } from '@/store/store';
 import { useUser, SignInButton, useAuth } from '@clerk/nextjs';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 interface RazorpayWindow extends Window {
     Razorpay: new (options: RazorpayOptions) => RazorpayInstance;
@@ -45,17 +46,21 @@ interface RazorpayResponse {
 
 function CartPage() {
     const groupedItems = useBasketStore((state) => state.getGroupedItems());
+    const [showPopup, setShowPopup] = useState(false);
     const { isSignedIn } = useAuth();
     const { user } = useUser();
     const router = useRouter();
+    const addresses = useBasketStore((state) => state.addresses);
+    const removeAddress = useBasketStore((state) => state.removeAddress);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     const [isClient, setIsClient] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     console.log(user);
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-    if (!isClient) return <Loader />
+    if (!isClient || !groupedItems) return <Loader />
 
     if (groupedItems.length == 0) {
         return (
@@ -118,7 +123,7 @@ function CartPage() {
     return (
         <div className="container mx-auto p-4 max-w-6xl">
             <h1 className="text-2xl font-bold mb-4">Your Basket</h1>
-            <div className="flex flex-col lg:flex-row gap-2">
+            <div className="flex flex-col lg:flex-row gap-2 lg:gap-0">
                 <div className="flex-grow">
                     {groupedItems?.map((item) => (
                         <div
@@ -156,41 +161,81 @@ function CartPage() {
                     {/* Spacer for fixed checkout on mobile */}
                 </div>
             </div>
-            <div className='w-full max-w-6xl mx-auto fixed bottom-0 lg:pr-10 pr-8'>
-                <div className="w-full h-fit bg-white p-6 border rounded mr-12">
-                    <h2 className="text-xl font-semibold">Order Summary</h2>
-                    <div className="mt-4 space-y-2">
-                        <p className="flex justify-between">
-                            <span>Items:</span>
-                            <span>
-                                {groupedItems.reduce((total, item) => total + item.quantity, 0)}
-                            </span>
-                        </p>
-                        <p className="flex justify-between text-2xl font-bold border-t pt-2">
-                            <span>Total:</span>
-                            <span>
-                                ₹{useBasketStore.getState().getTotalPrice().toFixed(2)}
-                            </span>
-                        </p>
-                    </div>
-
-                    {isSignedIn ? (
-                        <button
-                            onClick={handleCheckout}
-                            disabled={isLoading}
-                            className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-                        >
-                            {isLoading ? "Processing..." : "Checkout"}
-                        </button>
-                    ) : (
-                        <SignInButton mode="modal">
-                            <button
-                                className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                            >
-                                Sign in to Checkout
+            <div className='flex flex-col items-center justify-between w-full gap-4'>
+                <div className='w-full grid grid-cols-2 max-w-6xl border mx-auto bottom-0'>
+                    <div className="w-full h-fit bg-white p-4 pr-2 rounded">
+                        <h2 className="text-xl font-semibold">Select Address to Deliver</h2>
+                        <div className="mt-4 space-y-2">
+                            {addresses.length > 0 ? (
+                                addresses.map((address, index) => (
+                                    <div key={index} className="flex items-center justify-between p-2 border rounded">
+                                        <span>{`${address.firstName} ${address.lastName}, ${address.address1}, ${address.pincode}`}</span>
+                                        <button className="text-red-500" onClick={() => removeAddress(index)}>Remove</button>
+                                    </div>
+                                ))
+                            ) : (
+                                <div className="flex items-center justify-center p-4 border rounded">
+                                    <p>No addresses available.</p>
+                                </div>
+                            )}
+                            <button onClick={() => setShowPopup(true)} className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Add New Address
                             </button>
-                        </SignInButton>
-                    )}
+                            {showPopup && <AddAddressPopup onClose={() => setShowPopup(false)} />}
+                        </div>
+                    </div>
+                    <div className="w-full h-fit bg-white p-4 pl-2 rounded">
+                        <h2 className="text-xl font-semibold">Select Payment Mode</h2>
+                        <div className="mt-4 space-x-2 flex justify-between items-center">
+                            <div className="flex items-center justify-between p-4 border rounded w-full">
+                                <span>Pay Online</span>
+                            </div>
+                            <div className="flex items-center justify-between p-4 border rounded w-full">
+                                <span>Cash On Delivery</span>
+                            </div>
+                        </div>
+                            <button onClick={() => setShowPopup(true)} className="mt-2 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                Add New Address
+                            </button>
+                    </div>
+                </div>
+
+                <div className='w-full max-w-6xl mx-auto bottom-0'>
+                    <div className="w-full h-fit bg-white p-6 border rounded mr-12">
+                        <h2 className="text-xl font-semibold">Order Summary</h2>
+                        <div className="mt-4 space-y-2">
+                            <p className="flex justify-between">
+                                <span>Items:</span>
+                                <span>
+                                    {groupedItems.reduce((total, item) => total + item.quantity, 0)}
+                                </span>
+                            </p>
+                            <p className="flex justify-between text-2xl font-bold border-t pt-2">
+                                <span>Total:</span>
+                                <span>
+                                    ₹{useBasketStore.getState().getTotalPrice().toFixed(2)}
+                                </span>
+                            </p>
+                        </div>
+
+                        {isSignedIn ? (
+                            <button
+                                onClick={handleCheckout}
+                                disabled={isLoading}
+                                className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                            >
+                                {isLoading ? "Processing..." : "Checkout"}
+                            </button>
+                        ) : (
+                            <SignInButton mode="modal">
+                                <button
+                                    className="mt-4 w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                >
+                                    Sign in to Checkout
+                                </button>
+                            </SignInButton>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

@@ -30,8 +30,8 @@ async function Orders() {
                     :
                     (
                         <div className="space-y-6 sm:space-y-8">
-                            {orders.map((order) => (
-                                <div key={order.orderNumber} className=" bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                            {orders.map((order, index) => (
+                                <div key={`${order.orderNumber}-${order._id ?? index}`} className=" bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
                                     <div className="p-4 sm:p-6 border-b border-gray-200">
                                         <div className="flex flex-col gap-4 sm:flex-row sm: justify-between sm: items-center mb-4">
                                             <div>
@@ -83,8 +83,8 @@ async function Orders() {
                                             Order Items
                                         </p>
                                         <div className="space-y-3 sm:space-y-4">
-                                            {order.products?.map((product) => (
-                                                <div key={product.product?._id} className="flex flex-col sm:flex-row sm:items-center sm: justify-between gap-3 py-2 border-b last:border-b-0">
+                                            {order.products?.map((product, index) => (
+                                                <div key={`${product.product?._id}+${index}`} className="flex flex-col sm:flex-row sm:items-center sm: justify-between gap-3 py-2 border-b last:border-b-0">
                                                     <div className="flex items-center gap-3 sm:gap-4">
                                                         {product.product?.images && (
                                                             <div className="relative h-14 w-14 sm:h-16 sm:w-16 flex-shrink-0 rounded-md overflow-hidden">
