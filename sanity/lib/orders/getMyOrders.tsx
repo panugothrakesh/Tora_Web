@@ -21,10 +21,10 @@ export async function getMyOrders(userId: string){
             query: MY_ORDER_QUERY,
             params: { userId }
         })
-        console.log("Orders inside: ",orders)
+        console.log("Fetched orders:", orders)
         return orders.data || [];
     } catch (error) {
-        console.error("Error fetching the data: ", error)
+        console.error("Error fetching orders:", error)
         throw new Error("Error fetching orders")
     }
         
