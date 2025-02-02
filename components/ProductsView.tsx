@@ -1,16 +1,28 @@
-import { Product } from "@/sanity.types";
-import ProductCard from "./ProductCard";
+import { Product, Category } from "@/sanity.types";
+import ProductGrid from "./ProductGrid";
+import { CategorySelectorComponent } from "./ui/category-selector";
 
-interface ProductGridProps {
+interface ProductsViewProps {
   products: Product[];
+  categories: Category[];
 }
 
-export default function ProductGrid({ products }: ProductGridProps) {
+function ProductsView({ products, categories }: ProductsViewProps) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-6">
-      {products.map((product) => (
-        <ProductCard key={product._id} product={product} />
-      ))}
+    <div className="flex flex-col max-w-[1080px] px-4 lg:px-0 pb-16">
+      <div className="flex justify-end mt-4">
+        <div className="w-full sm:w-[200px]">
+            <CategorySelectorComponent categories={categories} />
+        </div>
+      </div>
+
+        <div className="flex-1">
+            <div>
+                <ProductGrid products={products} />
+            </div>
+        </div>
     </div>
-  );
+  )
 }
+
+export default ProductsView
