@@ -5,12 +5,15 @@ import Image from "next/image";
 import { Product } from "@/sanity.types";
 import { useState } from 'react';
 import {AddToCart} from "./AddToBasketButton";
+import ProductGrid from "./ProductGrid";
+import Link from "next/link";
 
 interface ProductDisplayProps {
     product: Product;
+    products: Product[];
 }
 
-export default function ProductDisplay({ product }: ProductDisplayProps) {
+export default function ProductDisplay({ product, products }: ProductDisplayProps) {
     const isOutOfStock = product.stock != null && product.stock <= 0;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     
@@ -25,6 +28,10 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
             prev === (product.images?.length ?? 0) - 1 ? 0 : prev + 1
         );
     };
+
+    const randomProducts = [...products]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 4);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -80,6 +87,19 @@ export default function ProductDisplay({ product }: ProductDisplayProps) {
                         <AddToCart product={product} disabled={isOutOfStock}/>
                     </div>
                 </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+        </div>
+        <div className="py-20">
+                <div className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold mb-4">
+                    More Products
+                </h1>
+                <Link href={"/"} className="prose max-w-none mb-6 cursor-pointer hover:underline py-2">
+                    Explore more &gt;
+                </Link>
+            </div>
+            {products && <ProductGrid products={randomProducts} />}
             </div>
         </div>
     );
