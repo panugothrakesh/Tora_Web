@@ -106,7 +106,7 @@ export default function ProductDisplay({ product, products }: ProductDisplayProp
                         Explore more &gt;
                     </Link>
                 </div>
-                {products && <ProductGrid products={displayProducts || []} />}
+                {displayProducts && <ProductGrid products={displayProducts} />}
             </div>
         </div>
     );
