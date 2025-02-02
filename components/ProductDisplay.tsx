@@ -1,10 +1,10 @@
-'use client'
+'use client';
 import { imageUrl } from "@/lib/imageUrl";
 import { PortableText } from "next-sanity";
 import Image from "next/image";
 import { Product } from "@/sanity.types";
-import { useState } from 'react';
-import {AddToCart} from "./AddToBasketButton";
+import { useState, useEffect } from 'react';
+import { AddToCart } from "./AddToBasketButton";
 import ProductGrid from "./ProductGrid";
 import Link from "next/link";
 
@@ -16,7 +16,20 @@ interface ProductDisplayProps {
 export default function ProductDisplay({ product, products }: ProductDisplayProps) {
     const isOutOfStock = product.stock != null && product.stock <= 0;
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    
+    const [displayProducts, setDisplayProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        if (products.length > 0) {
+            const currentProductIndex = products.findIndex(p => p._id === product._id);
+            const nextIndex = (currentProductIndex + 1) % products.length;
+            const selectedProducts = [
+                ...products.slice(nextIndex, nextIndex + 4),
+                ...products.slice(0, Math.max(0, 4 - (products.length - nextIndex)))
+            ];
+            setDisplayProducts(selectedProducts);
+        }
+    }, [product]);
+
     const handlePrevImage = () => {
         setCurrentImageIndex((prev) => 
             prev === 0 ? (product.images?.length ?? 0) - 1 : prev - 1
@@ -28,10 +41,6 @@ export default function ProductDisplay({ product, products }: ProductDisplayProp
             prev === (product.images?.length ?? 0) - 1 ? 0 : prev + 1
         );
     };
-
-    const randomProducts = [...products]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 4);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -88,19 +97,17 @@ export default function ProductDisplay({ product, products }: ProductDisplayProp
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-        </div>
-        <div className="py-20">
+            <div className="py-20">
                 <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold mb-4">
-                    More Products
-                </h1>
-                <Link href={"/"} className="prose max-w-none mb-6 cursor-pointer hover:underline py-2">
-                    Explore more &gt;
-                </Link>
-            </div>
-            {products && <ProductGrid products={randomProducts} />}
+                    <h1 className="text-3xl font-bold mb-4">
+                        More Products
+                    </h1>
+                    <Link href={"/"} className="prose max-w-none mb-6 cursor-pointer hover:underline py-2">
+                        Explore more &gt;
+                    </Link>
+                </div>
+                {products && <ProductGrid products={displayProducts || []} />}
             </div>
         </div>
     );
-} 
+}
