@@ -402,20 +402,22 @@ const CartPage: React.FC = () => {
           <div className="w-full bg-white p-4 rounded-md">
             <h2 className="text-md font-semibold">Select Payment Mode</h2>
             <div className="mt-4 space-y-2">
-              {/* <label className="flex items-center justify-between p-4 border rounded cursor-pointer w-full
-                                ${selectedPaymentMode === 'online' ? 'border-black bg-gray-100' : ''}">
-                                <div className="flex items-center flex-1">
-                                    <input
-                                        type="radio"
-                                        name="paymentMode"
-                                        value="online"
-                                        checked={selectedPaymentMode === 'online'}
-                                        onChange={() => setSelectedPaymentMode('online')}
-                                        className="mr-3 h-4 w-4 accent-black"
-                                    />
-                                    <span>Pay Online</span>
-                                </div>
-                            </label> */}
+              <label
+                className="flex items-center justify-between p-4 border rounded cursor-pointer w-full
+                                ${selectedPaymentMode === 'online' ? 'border-black bg-gray-100' : ''}"
+              >
+                <div className="flex items-center flex-1">
+                  <input
+                    type="radio"
+                    name="paymentMode"
+                    value="online"
+                    checked={selectedPaymentMode === "online"}
+                    onChange={() => setSelectedPaymentMode("online")}
+                    className="mr-3 h-4 w-4 accent-black"
+                  />
+                  <span>Pay Online</span>
+                </div>
+              </label>
 
               <label
                 className="flex items-center justify-between p-4 border rounded cursor-pointer w-full

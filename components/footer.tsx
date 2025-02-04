@@ -40,7 +40,7 @@ function Footer() {
           >
             Shipping and Delivery policy
           </Link>
-          <span className="hover:underline cursor-pointer">+91 9652389981</span>
+          <span className="hover:underline cursor-pointer">+91 7075149981</span>
         </div>
 
         {/* Copyright Section */}
