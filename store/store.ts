@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 export interface BasketItem {
     product: Product;
     quantity: number;
+    size: string;
 }
 
 export interface Address {
@@ -29,6 +30,7 @@ interface BasketState {
     getAddresses: () => Address[];
     addAddress: (address: Address) => void;
     removeAddress: (addressIndex: number) => void;
+    updateItemSize: (productId: string, size: string) => void;
 }
 
 export const useBasketStore = create<BasketState>()(persist((set, get) => ({
@@ -45,7 +47,7 @@ export const useBasketStore = create<BasketState>()(persist((set, get) => ({
                 )
             };
         } else {
-            return { items: [...state.items, { product, quantity: 1 }] };
+            return { items: [...state.items, { product, quantity: 1, size: 'M' }] };
         }
     }),
     removeItem: (productId) => set((state) => ({
@@ -77,6 +79,14 @@ export const useBasketStore = create<BasketState>()(persist((set, get) => ({
     removeAddress: (addressIndex) => set((state) => {
         const updatedAddresses = state.addresses.filter((_, index) => index !== addressIndex);
         return { addresses: updatedAddresses };
-    })
+    }),
+    updateItemSize: (productId: string, size: string) => 
+        set((state) => ({
+            items: state.items.map(item => 
+                item.product._id === productId 
+                    ? { ...item, size } 
+                    : item
+            )
+        })),
 }), { name: "basket-store" }));
 console.log(' :', );

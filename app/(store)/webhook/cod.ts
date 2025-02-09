@@ -7,6 +7,7 @@ interface CartItem {
         _id: string;
     };
     quantity: number;
+    size: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
                 _ref: item.product._id,
             },
             quantity: item.quantity,
+            size: item.size || 'M',
         }));
 
         const order = await backendClient.create({
