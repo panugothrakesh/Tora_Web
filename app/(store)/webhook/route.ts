@@ -131,6 +131,7 @@ async function createOrderInSanity(orderData: {
         name: string;
         quantity: number;
         price: number;
+        size: string;
     }>;
     totalAmount: number;
     currency: string;
@@ -176,6 +177,7 @@ async function createOrderInSanity(orderData: {
             _ref: item.id,
         },
         quantity: item.quantity,
+        size: item.size || 'M',
     }));
     console.log("Sanity products:", sanityProducts);
 

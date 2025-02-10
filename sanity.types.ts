@@ -105,6 +105,7 @@ export type Order = {
       [internalGroqTypeReferenceTo]?: "product";
     };
     quantity?: number;
+    size?: string;
     _key: string;
   }>;
   totalAmount?: number;
@@ -370,6 +371,7 @@ export type MY_ORDER_QUERYResult = Array<{
       stock?: number;
     } | null;
     quantity?: number;
+    size?: string;
     _key: string;
   }> | null;
   totalAmount?: number;

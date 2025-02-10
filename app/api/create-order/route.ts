@@ -7,11 +7,14 @@ interface OrderProduct {
     name: string;
     quantity: number;
     price: number;
+    size: string;
 }
 
 export async function POST(req: Request) {
     try {
         const body = await req.json();
+        console.log('Received order request body:', body);
+
         const {
             orderNumber,
             RazorpayCheckoutId,
@@ -29,14 +32,26 @@ export async function POST(req: Request) {
             shippingAddress
         } = body;
 
-        const sanityProducts = products.map((item: OrderProduct) => ({
-            _key: crypto.randomUUID(),
-            product: {
-                _type: "reference",
-                _ref: item.id,
-            },
-            quantity: item.quantity,
-        }));
+        console.log('Processing products:', products);
+
+        const sanityProducts = products.map((item: OrderProduct) => {
+            console.log('Processing individual item:', {
+                id: item.id,
+                name: item.name,
+                quantity: item.quantity,
+                size: item.size
+            });
+            return {
+                _key: crypto.randomUUID(),
+                product: {
+                    _type: "reference",
+                    _ref: item.id,
+                },
+                quantity: item.quantity,
+                size: item.size || 'M',
+            };
+        });
+        console.log('Final sanity products:', sanityProducts);
 
         const order = await backendClient.create({
             _type: "order",
@@ -55,6 +70,8 @@ export async function POST(req: Request) {
             RazorpayPaymentIntentId,
             shippingAddress
         });
+
+        console.log('Created order in Sanity:', order);
 
         return NextResponse.json({ 
             message: "Order created successfully", 

@@ -83,19 +83,33 @@ export const orderType = defineType({
                             title: 'Quantity Purchased',
                             type: 'number',
                         }),
+                        defineField({
+                            name: 'size',
+                            title: 'Size',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    { title: 'S', value: 'S' },
+                                    { title: 'M', value: 'M' },
+                                    { title: 'L', value: 'L' },
+                                    { title: 'XL', value: 'XL' },
+                                    { title: 'XXL', value: 'XXL' },
+                                ],
+                            },
+                        }),
                     ],
                     preview: {
                         select: {
                             product: 'product.name',
                             quantity: 'quantity',
+                            size: 'size',
                             images: 'product.images',
                             price: 'product.price',
-                            currency: 'product.currency',
                         },
                         prepare(select) {
                             return {
-                                title: `${select.product} x ${select.quantity}`,
-                                subtitle: `₹${select.price *  select.quantity}`,
+                                title: `${select.product} x ${select.quantity} (${select.size})`,
+                                subtitle: `₹${select.price * select.quantity}`,
                                 media: select.images[0],
                             }
                         },
