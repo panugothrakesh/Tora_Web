@@ -10,7 +10,8 @@ interface ProductsViewProps {
 function ProductsView({ products, categories }: ProductsViewProps) {
   return (
     <div className="flex flex-col max-w-[1080px] lg:px-0 pb-16">
-      <div className="flex justify-end mt-4">
+      <div className="flex flex-col sm:flex-row space-y-2 justify-between items-center mt-4">
+        <span className="text-xl font-bold">Our Products</span>
         <div className="w-full sm:w-[200px]">
           <CategorySelectorComponent categories={categories} />
         </div>
