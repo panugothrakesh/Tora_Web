@@ -12,17 +12,17 @@ function ProductsView({ products, categories }: ProductsViewProps) {
     <div className="flex flex-col max-w-[1080px] px-4 lg:px-0 pb-16">
       <div className="flex justify-end mt-4">
         <div className="w-full sm:w-[200px]">
-            <CategorySelectorComponent categories={categories} />
+          <CategorySelectorComponent categories={categories} />
         </div>
       </div>
 
-        <div className="flex-1">
-            <div>
-                <ProductGrid products={products} />
-            </div>
+      <div className="flex-1">
+        <div>
+          <ProductGrid products={products} />
         </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default ProductsView
+export default ProductsView;

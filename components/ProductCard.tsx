@@ -13,7 +13,7 @@ function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product.slug?.current}`}
-      className={`group flex flex-col w-full bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}
+      className={`group flex flex-col min-w-64 w-72 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden ${isOutOfStock ? "opacity-50 pointer-events-none" : ""}`}
     >
       <div className="relative aspect-square w-full h-full overflow-hidden">
         {product.images && (
