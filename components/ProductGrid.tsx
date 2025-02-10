@@ -10,7 +10,7 @@ interface ProductGridProps {
 
 function ProductGrid({ products }: ProductGridProps) {
   return (
-    <div className="flex overflow-x-auto gap-4 mt-4">
+    <div className="flex overflow-x-auto w-screen md:w-full mt-4">
       {products.map((product) => {
         return (
           <AnimatePresence key={product._id}>

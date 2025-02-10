@@ -168,7 +168,7 @@ const CartPage: React.FC = () => {
                   name: item.product.name,
                   quantity: item.quantity,
                   price: item.product.price,
-                  size: item.size || 'M',
+                  size: item.size || "M",
                 })),
                 totalAmount: order.amount / 100, // Convert from smallest currency unit
                 currency: order.currency,
@@ -307,15 +307,17 @@ const CartPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex items-center ml-4 flex-shrink-0 gap-4">
-                  <select 
-                    value={item.size || 'M'} 
+                  <select
+                    value={item.size || "M"}
                     onChange={(e) => {
                       const newSize = e.target.value;
-                      useBasketStore.getState().updateItemSize(item.product._id, newSize);
+                      useBasketStore
+                        .getState()
+                        .updateItemSize(item.product._id, newSize);
                     }}
                     className="h-10 rounded-md border border-gray-200 px-3 text-black"
                   >
-                    {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+                    {["S", "M", "L"].map((size) => (
                       <option key={size} value={size}>
                         {size}
                       </option>
